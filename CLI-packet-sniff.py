@@ -1,5 +1,5 @@
 from core import PacketSniffer, analisar_pacote
-
+import time
 
 def apresentar_pacote(pkt):
     dados = analisar_pacote(pkt)
@@ -20,26 +20,31 @@ def executar_cli():
     sniffer = PacketSniffer()
 
     try:
-        print("A iniciar captura de pacotes...")
-        print("Pressiona CTRL+C para parar.\n")
+        print("Starting the Scan...")
+        print("Enter CTRL+C to stop.\n")
+        time.sleep(1.75)
 
         sniffer.start(callback=apresentar_pacote)
 
         while True:
-            import time
+            
             time.sleep(0.5)
 
     except KeyboardInterrupt:
-        print("\nA parar a captura...")
+        print("\nStoping the scan...")
 
     finally:
         sniffer.stop()
 
         print(
-            f"Captura terminada. "
-            f"Pacotes guardados: {len(sniffer.obter_pacotes())}"
+            f"Scan ended. "
+            f"Captured Packets: {len(sniffer.obter_pacotes())}"
         )
 
 
 if __name__ == "__main__":
-    executar_cli()
+    choice = input('Start the Scan (Y/n): ').lower()
+    if choice == 'y' or choice == 'yes' or choice == '':
+        executar_cli()
+    else:
+        exit()
